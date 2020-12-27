@@ -12,7 +12,7 @@ const ERC20Mock = artifacts.require("./mock/token/ERC20Mock.sol");
 // Smart contracts
 const MarketsState = artifacts.require("./base/MarketsState.sol");
 
-contract('MarketsStateGetSupplyToDebtTest', function (accounts) {
+contract('MarketsStateGetDebtToSupplyTest', function (accounts) {
     const settingsInterfaceEncoder = new SettingsInterfaceEncoder(web3);
     const owner = accounts[0];
     let mocks;
@@ -106,7 +106,7 @@ contract('MarketsStateGetSupplyToDebtTest', function (accounts) {
             ], 0, 1, 0
         ],
     }, function(previousAmounts, borrowedIndexToTest, collateralIndexToTest, expectedResult) {
-        it(t('user', 'getSupplyToDebt', 'Should be able to get the supply to debt value.', false), async function() {
+        it(t('user', 'getDebtToSupply', 'Should be able to get the supply to debt value.', false), async function() {
             // Setup
             await settings.givenMethodReturnAddress(
                 settingsInterfaceEncoder.encodeGetCTokenAddress(),
@@ -125,7 +125,7 @@ contract('MarketsStateGetSupplyToDebtTest', function (accounts) {
             const collateralAsssetToTest = mocks[collateralIndexToTest];
 
             // Invocation
-            const result = await instance.getSupplyToDebt(
+            const result = await instance.getDebtToSupply(
                 borrowedAsssetToTest,
                 collateralAsssetToTest
             );

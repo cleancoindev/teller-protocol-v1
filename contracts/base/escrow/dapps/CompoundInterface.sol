@@ -5,7 +5,7 @@ pragma solidity 0.5.17;
 
     @author develop@teller.finance
  */
-interface ICompound {
+interface CompoundInterface {
     /**
         @notice To lend we first have to approve the cToken to access the token balance then mint. 
         @param tokenAddress address of the token.

@@ -55,18 +55,18 @@ library MarketStateLib {
     }
 
     /**
-        @notice It gets the current supply-to-debt (StD) ratio for a given market.
-        @notice The formula to calculate StD ratio is:
+        @notice It gets the current debt-to-supply (DtS) ratio for a given market.
+        @notice The formula to calculate DtS ratio is:
             
-            StD = (SUM(total borrowed) - SUM(total repaid)) / SUM(total supplied)
+            DtS = (SUM(total borrowed) - SUM(total repaid)) / SUM(total supplied)
 
         @notice The value has 2 decimal places.
             Example:
                 100 => 1%
         @param self the current market state reference.
-        @return the supply-to-debt ratio value.
+        @return the debt-to-supply ratio value.
      */
-    function getSupplyToDebt(MarketState storage self) internal view returns (uint256) {
+    function getDebtToSupply(MarketState storage self) internal view returns (uint256) {
         if (self.totalSupplied == 0 || self.totalBorrowed <= self.totalRepaid) {
             return 0;
         }
@@ -74,16 +74,16 @@ library MarketStateLib {
     }
 
     /**
-        @notice It gets the supply-to-debt (StD) ratio for a given market, including a new loan amount.
-        @notice The formula to calculate StD ratio (including a new loan amount) is:
+        @notice It gets the debt-to-supply (DtS) ratio for a given market, including a new loan amount.
+        @notice The formula to calculate DtS ratio (including a new loan amount) is:
             
-            StD = (SUM(total borrowed) - SUM(total repaid) + NewLoanAmount) / SUM(total supplied)
+            DtS = (SUM(total borrowed) - SUM(total repaid) + NewLoanAmount) / SUM(total supplied)
 
         @param self the current market state reference.
         @param loanAmount a new loan amount to consider in the ratio.
-        @return the supply-to-debt ratio value.
+        @return the debt-to-supply ratio value.
      */
-    function getSupplyToDebtFor(MarketState storage self, uint256 loanAmount)
+    function getDebtToSupplyFor(MarketState storage self, uint256 loanAmount)
         internal
         view
         returns (uint256)

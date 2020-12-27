@@ -1,6 +1,6 @@
 pragma solidity 0.5.17;
 
-interface IBaseProxy {
+interface BaseProxyInterface {
     /**
         @notice Returns the current implementation.
         @return Address of the current implementation

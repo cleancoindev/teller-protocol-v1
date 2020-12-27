@@ -14,7 +14,7 @@ import "../util/TellerCommon.sol";
 
 // Interfaces
 import "../interfaces/LogicVersionsRegistryInterface.sol";
-import "../interfaces/IBaseProxy.sol";
+import "../interfaces/BaseProxyInterface.sol";
 
 /*****************************************************************************************************/
 /**                                             WARNING                                             **/

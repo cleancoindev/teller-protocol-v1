@@ -13,7 +13,7 @@ import "../../../util/AddressLib.sol";
 import "../../BaseEscrowDapp.sol";
 
 // Interfaces
-import "./ICompound.sol";
+import "./CompoundInterface.sol";
 import "../../../providers/compound/CErc20Interface.sol";
 
 /*****************************************************************************************************/
@@ -32,7 +32,7 @@ import "../../../providers/compound/CErc20Interface.sol";
         delegatecalls from Escrow contract, so this contract's state is really Escrow.
     @author develop@teller.finance
  */
-contract Compound is ICompound, BaseEscrowDapp {
+contract Compound is CompoundInterface, BaseEscrowDapp {
     using AddressLib for address;
     using Address for address;
     using SafeERC20 for IERC20;

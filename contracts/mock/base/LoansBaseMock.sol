@@ -27,12 +27,12 @@ contract LoansBaseMock is LoansBase, BaseMock {
         loans[loanID].payOff(toPay);
     }
 
-    function externalIsSupplyToDebtRatioValid(uint256 newLoanAmount)
+    function externalIsDebtToSupplyRatioValid(uint256 newLoanAmount)
         external
         view
         returns (bool)
     {
-        return super._isSupplyToDebtRatioValid(newLoanAmount);
+        return super._isDebtToSupplyRatioValid(newLoanAmount);
     }
 
     function setLoan(

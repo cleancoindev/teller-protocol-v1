@@ -144,37 +144,37 @@ contract MarketsState is
     }
 
     /**
-        @notice It gets the current supply-to-debt (StD) ratio for a given market.
+        @notice It gets the current debt-to-supply (DtS) ratio for a given market.
         @param borrowedAsset borrowed asset address.
         @param collateralAsset collateral asset address.
-        @return the supply-to-debt ratio value.
+        @return the debt-to-supply ratio value.
      */
-    function getSupplyToDebt(address borrowedAsset, address collateralAsset)
+    function getDebtToSupply(address borrowedAsset, address collateralAsset)
         external
         view
         returns (uint256)
     {
-        return _getMarket(borrowedAsset, collateralAsset).getSupplyToDebt();
+        return _getMarket(borrowedAsset, collateralAsset).getDebtToSupply();
     }
 
     /**
-        @notice It gets the supply-to-debt (StD) ratio for a given market, including a new loan amount.
+        @notice It gets the debt-to-supply (DtS) ratio for a given market, including a new loan amount.
         @param borrowedAsset borrowed asset address.
         @param collateralAsset collateral asset address.
         @param loanAmount a new loan amount to consider in the ratio.
-        @return the supply-to-debt ratio value.
+        @return the debt-to-supply ratio value.
      */
-    function getSupplyToDebtFor(
+    function getDebtToSupplyFor(
         address borrowedAsset,
         address collateralAsset,
         uint256 loanAmount
     ) external view returns (uint256) {
         address cTokenAddress = _getCTokenAddress(borrowedAsset);
         if (cTokenAddress.isEmpty()) {
-            return markets[borrowedAsset][collateralAsset].getSupplyToDebtFor(loanAmount);
+            return markets[borrowedAsset][collateralAsset].getDebtToSupplyFor(loanAmount);
         } else {
             return
-                markets[cTokenAddress][collateralAsset].getSupplyToDebtFor(
+                markets[cTokenAddress][collateralAsset].getDebtToSupplyFor(
                     _getValueForAmount(borrowedAsset, loanAmount)
                 );
         }

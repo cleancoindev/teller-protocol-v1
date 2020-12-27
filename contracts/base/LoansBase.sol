@@ -45,7 +45,7 @@ contract LoansBase is LoansInterface, Base {
 
     /* State Variables */
 
-    bytes32 internal constant SUPPLY_TO_DEBT_ATM_SETTING = "SupplyToDebt";
+    bytes32 internal constant SUPPLY_TO_DEBT_ATM_SETTING = "DebtToSupply";
 
     uint256 public totalCollateral;
 
@@ -126,7 +126,7 @@ contract LoansBase is LoansInterface, Base {
         require(!exceedsMaxLoanAmount, "AMOUNT_EXCEEDS_MAX_AMOUNT");
 
         require(
-            _isSupplyToDebtRatioValid(loanRequest.amount),
+            _isDebtToSupplyRatioValid(loanRequest.amount),
             "SUPPLY_TO_DEBT_EXCEEDS_MAX"
         );
         _;
@@ -338,7 +338,7 @@ contract LoansBase is LoansInterface, Base {
         nonReentrant()
         isBorrower(loans[loanID].loanTerms.borrower)
     {
-        require(_isSupplyToDebtRatioValid(amountBorrow), "SUPPLY_TO_DEBT_EXCEEDS_MAX");
+        require(_isDebtToSupplyRatioValid(amountBorrow), "SUPPLY_TO_DEBT_EXCEEDS_MAX");
         require(
             loans[loanID].loanTerms.maxLoanAmount >= amountBorrow,
             "MAX_LOAN_EXCEEDED"
@@ -598,11 +598,11 @@ contract LoansBase is LoansInterface, Base {
     }
 
     /**
-        @notice It validates whether supply to debt (StD) ratio is valid including the loan amount.
-        @param newLoanAmount the new loan amount to consider o the StD ratio.
+        @notice It validates whether debt to supply (DtS) ratio is valid including the loan amount.
+        @param newLoanAmount the new loan amount to consider for the DtS ratio.
         @return true if the ratio is valid. Otherwise it returns false.
      */
-    function _isSupplyToDebtRatioValid(uint256 newLoanAmount)
+    function _isDebtToSupplyRatioValid(uint256 newLoanAmount)
         internal
         view
         returns (bool)
@@ -612,14 +612,14 @@ contract LoansBase is LoansInterface, Base {
             collateralToken
         );
         require(atmAddressForMarket != address(0x0), "ATM_NOT_FOUND_FOR_MARKET");
-        uint256 supplyToDebtMarketLimit = ATMGovernanceInterface(atmAddressForMarket)
+        uint256 debtToSupplyMarketLimit = ATMGovernanceInterface(atmAddressForMarket)
             .getGeneralSetting(SUPPLY_TO_DEBT_ATM_SETTING);
-        uint256 currentSupplyToDebtMarket = _markets().getSupplyToDebtFor(
+        uint256 currentDebtToSupplyMarket = _markets().getDebtToSupplyFor(
             lendingPool.lendingToken(),
             collateralToken,
             newLoanAmount
         );
-        return currentSupplyToDebtMarket <= supplyToDebtMarketLimit;
+        return currentDebtToSupplyMarket <= debtToSupplyMarketLimit;
     }
 
     /**

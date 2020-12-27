@@ -8,7 +8,7 @@ import "./TInitializable.sol";
 // Interfaces
 import "../interfaces/EscrowInterface.sol";
 import "../interfaces/LoansInterface.sol";
-import "../interfaces/IBaseProxy.sol";
+import "../interfaces/BaseProxyInterface.sol";
 import "../providers/compound/CErc20Interface.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol";
 
@@ -78,7 +78,7 @@ contract Escrow is EscrowInterface, TInitializable, BaseEscrowDapp {
             "DAPP_UNSECURED_NOT_ALLOWED"
         );
 
-        address _impl = IBaseProxy(dappData.location).implementation();
+        address _impl = BaseProxyInterface(dappData.location).implementation();
         (bool success, ) = _impl.delegatecall(dappData.data);
 
         if (!success) {
