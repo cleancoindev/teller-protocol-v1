@@ -12,12 +12,12 @@ const TLRToken = artifacts.require("./atm/TLRToken.sol");
 const ATMGovernance = artifacts.require("./atm/ATMGovernance.sol");
 const ATMLiquidityMining = artifacts.require("./atm/ATMLiquidityMining.sol");
 const TDAI = artifacts.require("./base/TDAI.sol");
-const IATMSettingsEncoder = require('../utils/encoders/IATMSettingsEncoder');
-const SettingsInterfaceEncoder = require('../utils/encoders/SettingsInterfaceEncoder');
+const ATMSettingsEncoder = require('../utils/encoders/IATMSettingsEncoder');
+const SettingsEncoder = require('../utils/encoders/ISettingsEncoder');
 
 contract("ATMLiquidityMiningCalculateAccruedTLRTest", function(accounts) {
-    const atmSettingsEncoder = new IATMSettingsEncoder(web3);
-    const settingsInterfaceEncoder = new SettingsInterfaceEncoder(web3);
+    const atmSettingsEncoder = new ATMSettingsEncoder(web3);
+    const ISettingsEncoder = new SettingsEncoder(web3);
     const owner = accounts[0]; 
     const user = accounts[2];
     const INITIAL_REWARD = 1;
@@ -35,7 +35,7 @@ contract("ATMLiquidityMiningCalculateAccruedTLRTest", function(accounts) {
             false
         );
         await settings.givenMethodReturnAddress(
-            settingsInterfaceEncoder.encodeATMSettings(),
+            ISettingsEncoder.encodeATMSettings(),
             atmSettingsInstance.address
         );
         governance = await ATMGovernance.new();

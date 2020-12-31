@@ -3,7 +3,7 @@ const { withData } = require("leche");
 const { t, ETH_ADDRESS,  } = require("../utils/consts");
 const { createTestSettingsInstance } = require('../utils/settings-helper');
 const ChainlinkAggregatorEncoder = require("../utils/encoders/ChainlinkAggregatorEncoder");
-const CompoundInterfaceEncoder = require("../utils/encoders/CompoundInterfaceEncoder");
+const ICompoundEncoder = require("../utils/encoders/ICompoundEncoder");
 
 // Mock contracts
 const Mock = artifacts.require("./mock/util/Mock.sol");
@@ -16,7 +16,7 @@ const Escrow = artifacts.require("./mock/base/EscrowMock.sol");
 
 contract("EscrowValueOfInTest", function(accounts) {
   const chainlinkAggregatorEncoder = new ChainlinkAggregatorEncoder(web3)
-  const cTokenEncoder = new CompoundInterfaceEncoder(web3)
+  const cTokenEncoder = new ICompoundEncoder(web3)
 
   let instance;
   let aggregator;

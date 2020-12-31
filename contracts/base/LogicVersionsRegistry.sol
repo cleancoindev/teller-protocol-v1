@@ -13,8 +13,8 @@ import "../util/LogicVersionsConsts.sol";
 import "../util/TellerCommon.sol";
 
 // Interfaces
-import "../interfaces/LogicVersionsRegistryInterface.sol";
-import "../interfaces/BaseProxyInterface.sol";
+import "../interfaces/ILogicVersionsRegistry.sol";
+import "../interfaces/IBaseProxy.sol";
 
 /*****************************************************************************************************/
 /**                                             WARNING                                             **/
@@ -32,7 +32,7 @@ import "../interfaces/BaseProxyInterface.sol";
     @author develop@teller.finance
  */
 contract LogicVersionsRegistry is
-    LogicVersionsRegistryInterface,
+    ILogicVersionsRegistry,
     TInitializable,
     BaseUpgradeable
 {

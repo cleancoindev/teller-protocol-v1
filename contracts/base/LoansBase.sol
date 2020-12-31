@@ -13,11 +13,11 @@ import "../util/LoanLib.sol";
 import "./Base.sol";
 
 // Interfaces
-import "../interfaces/LendingPoolInterface.sol";
-import "../interfaces/LoanTermsConsensusInterface.sol";
-import "../interfaces/LoansInterface.sol";
-import "../atm/ATMGovernanceInterface.sol";
-import "../interfaces/EscrowInterface.sol";
+import "../interfaces/ILendingPool.sol";
+import "../interfaces/ILoanTermsConsensus.sol";
+import "../interfaces/ILoans.sol";
+import "../atm/IATMGovernance.sol";
+import "../interfaces/IEscrow.sol";
 
 /*****************************************************************************************************/
 /**                                             WARNING                                             **/
@@ -32,11 +32,11 @@ import "../interfaces/EscrowInterface.sol";
 /*****************************************************************************************************/
 /**
     @notice This contract is used as a basis for the creation of the different types of loans across the platform
-    @notice It implements the Base contract from Teller and the LoansInterface
+    @notice It implements the Base contract from Teller and the ILoans
 
     @author develop@teller.finance
  */
-contract LoansBase is LoansInterface, Base {
+contract LoansBase is ILoans, Base {
     using SafeMath for uint256;
     using NumbersLib for uint256;
     using NumbersLib for int256;
@@ -54,9 +54,9 @@ contract LoansBase is LoansInterface, Base {
     // At any time, this variable stores the next available loan ID
     uint256 public loanIDCounter;
 
-    LendingPoolInterface public lendingPool;
+    ILendingPool public lendingPool;
 
-    LoanTermsConsensusInterface public loanTermsConsensus;
+    ILoanTermsConsensus public loanTermsConsensus;
 
     mapping(address => uint256[]) public borrowerLoans;
 
@@ -384,7 +384,7 @@ contract LoansBase is LoansInterface, Base {
 
         if (!eoaAllowed) {
             loans[loanID].escrow.requireNotEmpty("ESCROW_CONTRACT_NOT_DEFINED");
-            EscrowInterface(loans[loanID].escrow).initialize(address(this), loanID);
+            IEscrow(loans[loanID].escrow).initialize(address(this), loanID);
         }
 
         emit LoanTakenOut(
@@ -536,7 +536,7 @@ contract LoansBase is LoansInterface, Base {
             uint256 remainingCollateralAmount = reward.sub(loans[loanID].collateral);
             _payOutCollateral(loanID, loans[loanID].collateral, recipient);
             if (remainingCollateralAmount > 0 && loans[loanID].escrow != address(0x0)) {
-                EscrowInterface(loans[loanID].escrow).claimTokensByCollateralValue(
+                IEscrow(loans[loanID].escrow).claimTokensByCollateralValue(
                     recipient,
                     remainingCollateralAmount
                 );
@@ -572,8 +572,8 @@ contract LoansBase is LoansInterface, Base {
 
         _initialize(settingsAddress);
 
-        lendingPool = LendingPoolInterface(lendingPoolAddress);
-        loanTermsConsensus = LoanTermsConsensusInterface(loanTermsConsensusAddress);
+        lendingPool = ILendingPool(lendingPoolAddress);
+        loanTermsConsensus = ILoanTermsConsensus(loanTermsConsensusAddress);
     }
 
     /**
@@ -612,7 +612,7 @@ contract LoansBase is LoansInterface, Base {
             collateralToken
         );
         require(atmAddressForMarket != address(0x0), "ATM_NOT_FOUND_FOR_MARKET");
-        uint256 debtToSupplyMarketLimit = ATMGovernanceInterface(atmAddressForMarket)
+        uint256 debtToSupplyMarketLimit = IATMGovernance(atmAddressForMarket)
             .getGeneralSetting(SUPPLY_TO_DEBT_ATM_SETTING);
         uint256 currentDebtToSupplyMarket = _markets().getDebtToSupplyFor(
             lendingPool.lendingToken(),

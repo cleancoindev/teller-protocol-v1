@@ -4,9 +4,9 @@ const withData = require("leche").withData;
 const { t, NULL_ADDRESS } = require("../utils/consts");
 const { createTestSettingsInstance } = require("../utils/settings-helper");
 
-const IATMSettingsEncoder = require("../utils/encoders/IATMSettingsEncoder");
-const MarketsStateInterfaceEncoder = require("../utils/encoders/MarketsStateInterfaceEncoder");
-const ATMGovernanceInterfaceEncoder = require("../utils/encoders/ATMGovernanceInterfaceEncoder");
+const ATMSettingsEncoder = require("../utils/encoders/IATMSettingsEncoder");
+const MarketsStateEncoder = require("../utils/encoders/IMarketsStateEncoder");
+const ATMGovernanceEncoder = require("../utils/encoders/IATMGovernanceEncoder");
 
 // Mock contracts
 const Mock = artifacts.require("./mock/util/Mock.sol");
@@ -19,9 +19,9 @@ const Loans = artifacts.require("./mock/base/LoansBaseMock.sol");
 const LoanLib = artifacts.require("../util/LoanLib.sol");
 
 contract("LoansBaseIsDebtToSupplyRatioValidTest", function(accounts) {
-  const IAtmSettingsEncoder = new IATMSettingsEncoder(web3);
-  const marketsStateInterfaceEncoder = new MarketsStateInterfaceEncoder(web3);
-  const atmGovernanceInterfaceEncoder = new ATMGovernanceInterfaceEncoder(web3);
+  const IAtmSettingsEncoder = new ATMSettingsEncoder(web3);
+  const IMarketsStateEncoder = new MarketsStateEncoder(web3);
+  const IATMGovernanceEncoder = new ATMGovernanceEncoder(web3);
 
   let instance;
   let marketsInstance;
@@ -76,11 +76,11 @@ contract("LoansBaseIsDebtToSupplyRatioValidTest", function(accounts) {
         atmGovernanceAddress
       );
       await atmGovernanceInstance.givenMethodReturnUint(
-        atmGovernanceInterfaceEncoder.encodeGetGeneralSetting(),
+        IATMGovernanceEncoder.encodeGetGeneralSetting(),
         getGeneralSettingResponse
       );
       await marketsInstance.givenMethodReturnUint(
-        marketsStateInterfaceEncoder.encodeGetDebtToSupplyFor(),
+        IMarketsStateEncoder.encodeGetDebtToSupplyFor(),
         getDebtToSupplyForResponse
       );
 

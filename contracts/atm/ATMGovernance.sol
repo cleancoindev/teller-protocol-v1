@@ -15,7 +15,7 @@ import "@openzeppelin/contracts-ethereum-package/contracts/access/roles/SignerRo
 import "../base/BaseUpgradeable.sol";
 
 // Interfaces
-import "./ATMGovernanceInterface.sol";
+import "./IATMGovernance.sol";
 
 /*****************************************************************************************************/
 /**                                             WARNING                                             **/
@@ -33,7 +33,7 @@ import "./ATMGovernanceInterface.sol";
     @author develop@teller.finance
  */
 contract ATMGovernance is
-    ATMGovernanceInterface,
+    IATMGovernance,
     TInitializable,
     SignerRole,
     BaseUpgradeable

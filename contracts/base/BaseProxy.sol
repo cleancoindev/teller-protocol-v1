@@ -1,7 +1,7 @@
 pragma solidity 0.5.17;
 
 // Interfaces
-import "../interfaces/BaseProxyInterface.sol";
+import "../interfaces/IBaseProxy.sol";
 
 // Contracts
 import "@openzeppelin/upgrades/contracts/upgradeability/Proxy.sol";
@@ -14,7 +14,7 @@ import "./BaseUpgradeable.sol";
 
     @author develop@teller.finance
  */
-contract BaseProxy is BaseProxyInterface, BaseUpgradeable, Proxy {
+contract BaseProxy is IBaseProxy, BaseUpgradeable, Proxy {
     using Address for address;
 
     /**

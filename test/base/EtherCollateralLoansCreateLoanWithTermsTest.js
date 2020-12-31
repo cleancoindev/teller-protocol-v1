@@ -10,8 +10,8 @@ const {
 } = require('../utils/consts')
 const { loans } = require('../utils/events')
 const { createLoanRequest, createUnsignedLoanResponse } = require('../utils/structs')
-const LendingPoolInterfaceEncoder = require('../utils/encoders/LendingPoolInterfaceEncoder')
-const IATMSettingsEncoder = require('../utils/encoders/IATMSettingsEncoder')
+const ILendingPoolEncoder = require('../utils/encoders/ILendingPoolEncoder')
+const ATMSettingsEncoder = require('../utils/encoders/IATMSettingsEncoder')
 const CTokenInterfaceEncoder = require('../utils/encoders/CTokenInterfaceEncoder')
 const { createTestSettingsInstance } = require('../utils/settings-helper')
 
@@ -27,8 +27,8 @@ const LoanTermsConsensus = artifacts.require('./base/LoanTermsConsensus.sol')
 const LoanLib = artifacts.require("../util/LoanLib.sol");
 
 contract('EtherCollateralLoansCreateLoanWithTermsTest', function (accounts) {
-  const lendingPoolInterfaceEncoder = new LendingPoolInterfaceEncoder(web3)
-  const IAtmSettingsEncoder = new IATMSettingsEncoder(web3)
+  const iLendingPoolEncoder = new ILendingPoolEncoder(web3)
+  const IAtmSettingsEncoder = new ATMSettingsEncoder(web3)
   const cTokenEncoder = new CTokenInterfaceEncoder(web3)
 
   const owner = accounts[0]
@@ -90,7 +90,7 @@ contract('EtherCollateralLoansCreateLoanWithTermsTest', function (accounts) {
       .processRequest(emptyRequest, [ responseOne ])
       .encodeABI()
 
-    const encodeLendingToken = lendingPoolInterfaceEncoder.encodeLendingToken()
+    const encodeLendingToken = ILendingPoolEncoder.encodeLendingToken()
     lendingPoolInstance.givenMethodReturnAddress(encodeLendingToken, lendingTokenInstance.address)
 
     const atmForMarketInstance = await Mock.new()

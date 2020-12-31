@@ -4,15 +4,15 @@ pragma solidity 0.5.17;
 import "../util/AddressLib.sol";
 
 // Interfaces
-import "../interfaces/SettingsInterface.sol";
-import "../interfaces/BaseUpgradeableInterface.sol";
+import "../interfaces/ISettings.sol";
+import "../interfaces/IBaseUpgradeable.sol";
 
 /**
     @notice It is the base contract to hold the settings instance and upgradeable logic name in registry.
 
     @author develop@teller.finance
  */
-contract BaseUpgradeable is BaseUpgradeableInterface {
+contract BaseUpgradeable is IBaseUpgradeable {
     using Address for address;
     using AddressLib for address;
 
@@ -48,7 +48,7 @@ contract BaseUpgradeable is BaseUpgradeableInterface {
         @notice The gets the settings contract address from the SETTINGS_SLOT.
         @dev This address should NOT change over the time. See details in the _setSettings(...) function.
      */
-    function settings() external view returns (SettingsInterface) {
+    function settings() external view returns (ISettings) {
         return _getSettings();
     }
 
@@ -68,7 +68,7 @@ contract BaseUpgradeable is BaseUpgradeableInterface {
 
     /** Internal Functions **/
 
-    function _getSettings() internal view returns (SettingsInterface) {
+    function _getSettings() internal view returns (ISettings) {
         address settingsAddress;
 
         bytes32 slot = SETTINGS_SLOT;
@@ -76,7 +76,7 @@ contract BaseUpgradeable is BaseUpgradeableInterface {
             settingsAddress := sload(slot)
         }
 
-        return SettingsInterface(settingsAddress);
+        return ISettings(settingsAddress);
     }
 
     /**

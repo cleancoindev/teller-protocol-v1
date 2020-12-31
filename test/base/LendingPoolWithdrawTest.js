@@ -4,9 +4,9 @@ const { t, NULL_ADDRESS } = require('../utils/consts');
 const { lendingPool } = require('../utils/events');
 const { initContracts } = require('../utils/contracts');
 const BurnableInterfaceEncoder = require('../utils/encoders/BurnableInterfaceEncoder');
-const CompoundInterfaceEncoder = require('../utils/encoders/CompoundInterfaceEncoder');
+const CompoundEncoder = require('../utils/encoders/ICompoundEncoder');
 const ERC20InterfaceEncoder = require('../utils/encoders/ERC20InterfaceEncoder');
-const SettingsInterfaceEncoder = require('../utils/encoders/SettingsInterfaceEncoder');
+const SettingsEncoder = require('../utils/encoders/ISettingsEncoder');
 const CTokenInterfaceEncoder = require('../utils/encoders/CTokenInterfaceEncoder')
 
 // Mock contracts
@@ -20,9 +20,9 @@ const TDAI = artifacts.require("./base/TDAI.sol");
 
 contract('LendingPoolWithdrawTest', function (accounts) {
     const burnableInterfaceEncoder = new BurnableInterfaceEncoder(web3);
-    const compoundInterfaceEncoder = new CompoundInterfaceEncoder(web3);
+    const ICompoundEncoder = new CompoundEncoder(web3);
     const erc20InterfaceEncoder = new ERC20InterfaceEncoder(web3);
-    const settingsInterfaceEncoder = new SettingsInterfaceEncoder(web3);
+    const ISettingsEncoder = new SettingsEncoder(web3);
     const cTokenEncoder = new CTokenInterfaceEncoder(web3)
 
     let instance;
@@ -41,7 +41,7 @@ contract('LendingPoolWithdrawTest', function (accounts) {
         instance = await LendingPool.new();
 
         await settingsInstance.givenMethodReturnAddress(
-            settingsInterfaceEncoder.encodeMarketsState(),
+            ISettingsEncoder.encodeMarketsState(),
             marketsInstance.address
         );
     });
@@ -69,7 +69,7 @@ contract('LendingPoolWithdrawTest', function (accounts) {
               lendingTokenInstance.address
             )
             await settingsInstance.givenMethodReturnAddress(
-                settingsInterfaceEncoder.encodeGetCTokenAddress(),
+                ISettingsEncoder.encodeGetCTokenAddress(),
                 cTokenInstance.address
             );
             await initContracts(
@@ -86,7 +86,7 @@ contract('LendingPoolWithdrawTest', function (accounts) {
             await lendingTokenInstance.givenMethodReturnBool(encodeTransfer, transfer);
 
             const redeemResponse = compoundFails ? 1 : 0
-            const encodeRedeemUnderlying = compoundInterfaceEncoder.encodeRedeemUnderlying();
+            const encodeRedeemUnderlying = ICompoundEncoder.encodeRedeemUnderlying();
             await cTokenInstance.givenMethodReturnUint(encodeRedeemUnderlying, redeemResponse);
 
             const encodeBalanceOf = erc20InterfaceEncoder.encodeBalanceOf();

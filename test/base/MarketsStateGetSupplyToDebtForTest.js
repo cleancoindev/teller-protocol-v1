@@ -2,7 +2,7 @@
 const withData = require('leche').withData;
 const { t, createMocks, toDecimals, CTOKEN_DECIMALS } = require('../utils/consts');
 const actions = require('../utils/marketStateActions.js');
-const SettingsInterfaceEncoder = require('../utils/encoders/SettingsInterfaceEncoder');
+const SettingsEncoder = require('../utils/encoders/ISettingsEncoder');
 const CTokenInterfaceEncoder = require('../utils/encoders/CTokenInterfaceEncoder');
 
 // Mock contracts
@@ -12,7 +12,7 @@ const Mock = artifacts.require("./mock/util/Mock.sol");
 const MarketsState = artifacts.require("./base/MarketsState.sol");
 
 contract('MarketsStateGetDebtToSupplyForTest', function (accounts) {
-    const settingsInterfaceEncoder = new SettingsInterfaceEncoder(web3);
+    const ISettingsEncoder = new SettingsEncoder(web3);
     const cTokenInterfaceEncoder = new CTokenInterfaceEncoder(web3);
     const owner = accounts[0];
     let mocks;
@@ -92,7 +92,7 @@ contract('MarketsStateGetDebtToSupplyForTest', function (accounts) {
         it(t('user', 'getDebtToSupplyFor', 'Should be able to get the supply to debt value.', false), async function() {
             // Setup
             await settings.givenMethodReturnAddress(
-                settingsInterfaceEncoder.encodeGetCTokenAddress(),
+                ISettingsEncoder.encodeGetCTokenAddress(),
                 cTokenInstance.address
             );
             await cTokenInstance.givenMethodReturnUint(

@@ -2,7 +2,7 @@
 const withData = require('leche').withData;
 const { t, NON_EXISTENT, ACTIVE, TERMS_SET, CLOSED, NULL_ADDRESS, daysToSeconds, toDecimals } = require('../utils/consts');
 const { createLoanRequest } = require('../utils/structs');
-const SettingsInterfaceEncoder = require('../utils/encoders/SettingsInterfaceEncoder');
+const SettingsEncoder = require('../utils/encoders/ISettingsEncoder');
 
 // Mock constracts
 const Mock = artifacts.require("./mock/util/Mock.sol");
@@ -15,7 +15,7 @@ const LoansBaseModifiersMock = artifacts.require("./mock/base/LoansBaseModifiers
 const LoanLib = artifacts.require("../util/LoanLib.sol");
 
 contract('LoansBaseModifiersTest', function (accounts) {
-    const settingsInterfaceEncoder = new SettingsInterfaceEncoder(web3);
+    const ISettingsEncoder = new SettingsEncoder(web3);
     let instance
     let settingsInstance;
     
@@ -176,7 +176,7 @@ contract('LoansBaseModifiersTest', function (accounts) {
             const borrower = accounts[borrowerIndex];
             const consensusInstance = await Mock.new();
             const loanRequest = createLoanRequest(borrower, NULL_ADDRESS, 3, amount.toFixed(0), duration, 19, consensusInstance.address);
-            const encodeGetPlatformSettingValue = settingsInterfaceEncoder.encodeGetPlatformSettingValue();
+            const encodeGetPlatformSettingValue = ISettingsEncoder.encodeGetPlatformSettingValue();
             await settingsInstance.givenMethodReturnUint(encodeGetPlatformSettingValue, maxLoanDurationResponse);
             await instance.setMockIsDebtToDebtRatioValid(true, isDebtToSupplyRatioValidResponse);
 

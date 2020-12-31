@@ -12,7 +12,7 @@ import "./BaseUpgradeable.sol";
 import "./TInitializable.sol";
 
 // Interfaces
-import "../interfaces/MarketsStateInterface.sol";
+import "../interfaces/IMarketsState.sol";
 import "../util/MarketStateLib.sol";
 import "../util/AddressLib.sol";
 import "../util/NumbersLib.sol";
@@ -34,7 +34,7 @@ import "../providers/compound/CErc20Interface.sol";
     @author develop@teller.finance
  */
 contract MarketsState is
-    MarketsStateInterface,
+    IMarketsState,
     TInitializable,
     WhitelistedRole,
     BaseUpgradeable

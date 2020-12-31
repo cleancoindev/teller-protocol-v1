@@ -6,9 +6,9 @@ const {
   NULL_ADDRESS,
 } = require('../utils/consts');
 const { createLoanRequest, createUnsignedLoanResponse } = require('../utils/structs');
-const LendingPoolInterfaceEncoder = require('../utils/encoders/LendingPoolInterfaceEncoder');
-const IATMSettingsEncoder = require('../utils/encoders/IATMSettingsEncoder');
-const SettingsInterfaceEncoder = require('../utils/encoders/SettingsInterfaceEncoder');
+const ILendingPoolEncoder = require('../utils/encoders/ILendingPoolEncoder');
+const ATMSettingsEncoder = require('../utils/encoders/IATMSettingsEncoder');
+const SettingsEncoder = require('../utils/encoders/ISettingsEncoder');
 const CTokenInterfaceEncoder = require('../utils/encoders/CTokenInterfaceEncoder')
 const { createTestSettingsInstance } = require('../utils/settings-helper');
 
@@ -24,9 +24,9 @@ const LoanTermsConsensus = artifacts.require("./base/LoanTermsConsensus.sol");
 const LoanLib = artifacts.require("../util/LoanLib.sol");
 
 contract('EtherCollateralLoansGetBorrowerLoansTest', function (accounts) {
-    const lendingPoolInterfaceEncoder = new LendingPoolInterfaceEncoder(web3);
-    const IAtmSettingsEncoder = new IATMSettingsEncoder(web3);
-    const settingsInterfaceEncoder = new SettingsInterfaceEncoder(web3);
+    const iLendingPoolEncoder = new ILendingPoolEncoder(web3);
+    const IAtmSettingsEncoder = new ATMSettingsEncoder(web3);
+    const ISettingsEncoder = new SettingsEncoder(web3);
     const cTokenEncoder = new CTokenInterfaceEncoder(web3)
 
     let instance;
@@ -87,7 +87,7 @@ contract('EtherCollateralLoansGetBorrowerLoansTest', function (accounts) {
             .processRequest(emptyRequest, [responseOne])
             .encodeABI();
         
-        const encodeLendingToken = lendingPoolInterfaceEncoder.encodeLendingToken();
+        const encodeLendingToken = ILendingPoolEncoder.encodeLendingToken();
         lendingPoolInstance.givenMethodReturnAddress(encodeLendingToken, lendingTokenInstance.address);
 
         const atmForMarketInstance = await Mock.new();

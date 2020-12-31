@@ -82,7 +82,7 @@ contract LoansBaseMock is LoansBase, BaseMock {
         uint256 amountToClaim,
         uint256 loanID
     ) external {
-        EscrowInterface(loans[loanID].escrow).claimTokensByCollateralValue(
+        IEscrow(loans[loanID].escrow).claimTokensByCollateralValue(
             recipient,
             amountToClaim
         );

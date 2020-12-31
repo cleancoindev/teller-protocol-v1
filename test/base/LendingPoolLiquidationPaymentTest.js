@@ -2,9 +2,9 @@
 const withData = require('leche').withData;
 const { t, NULL_ADDRESS } = require('../utils/consts');
 const { lendingPool } = require('../utils/events');
-const CompoundInterfaceEncoder = require('../utils/encoders/CompoundInterfaceEncoder');
+const CompoundEncoder = require('../utils/encoders/ICompoundEncoder');
 const CTokenInterfaceEncoder = require('../utils/encoders/CTokenInterfaceEncoder')
-const SettingsInterfaceEncoder = require('../utils/encoders/SettingsInterfaceEncoder');
+const SettingsEncoder = require('../utils/encoders/ISettingsEncoder');
 
 // Mock contracts
 const Mock = artifacts.require("./mock/util/Mock.sol");
@@ -15,9 +15,9 @@ const Lenders = artifacts.require("./base/Lenders.sol");
 const LendingPool = artifacts.require("./mock/base/LendingPoolMock.sol");
 
 contract('LendingPoolLiquidationPaymentTest', function (accounts) {
-    const compoundInterfaceEncoder = new CompoundInterfaceEncoder(web3);
+    const ICompoundEncoder = new CompoundEncoder(web3);
     const cTokenEncoder = new CTokenInterfaceEncoder(web3)
-    const settingsInterfaceEncoder = new SettingsInterfaceEncoder(web3);
+    const ISettingsEncoder = new SettingsEncoder(web3);
     let instance;
     let tTokenInstance;
     let daiInstance;
@@ -52,7 +52,7 @@ contract('LendingPoolLiquidationPaymentTest', function (accounts) {
         );
 
         await settingsInstance.givenMethodReturnAddress(
-            settingsInterfaceEncoder.encodeMarketsState(),
+            ISettingsEncoder.encodeMarketsState(),
             marketStateInstance.address
         );
     });
@@ -81,7 +81,7 @@ contract('LendingPoolLiquidationPaymentTest', function (accounts) {
             const sender = accounts[1];
             if(isCTokenSupported) {
                 await settingsInstance.givenMethodReturnAddress(
-                    settingsInterfaceEncoder.encodeGetCTokenAddress(),
+                    ISettingsEncoder.encodeGetCTokenAddress(),
                     cTokenInstance.address
                 );
             }
@@ -98,7 +98,7 @@ contract('LendingPoolLiquidationPaymentTest', function (accounts) {
             }
 
             const redeemResponse = compoundFails ? 1 : 0
-            const encodeMint = compoundInterfaceEncoder.encodeMint();
+            const encodeMint = ICompoundEncoder.encodeMint();
             await cTokenInstance.givenMethodReturnUint(encodeMint, redeemResponse);
             await daiInstance.mint(liquidator, allowance);
             await daiInstance.approve(instance.address, allowance, { from: liquidator });

@@ -11,7 +11,7 @@ import "../../../util/AddressLib.sol";
 import "../../BaseEscrowDapp.sol";
 
 // Interfaces
-import "./UniswapInterface.sol";
+import "./IUniswap.sol";
 import "../../../providers/uniswap/IUniswapV2Router02.sol";
 
 /*****************************************************************************************************/
@@ -30,7 +30,7 @@ import "../../../providers/uniswap/IUniswapV2Router02.sol";
         delegatecalls from Escrow contract, so this contract's state is really Escrow.
     @author develop@teller.finance
  */
-contract Uniswap is UniswapInterface, BaseEscrowDapp {
+contract Uniswap is IUniswap, BaseEscrowDapp {
     using AddressLib for address;
     using Address for address;
     using SafeERC20 for IERC20;

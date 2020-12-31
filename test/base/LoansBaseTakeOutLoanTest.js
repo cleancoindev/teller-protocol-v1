@@ -9,9 +9,9 @@ const { createTestSettingsInstance } = require("../utils/settings-helper");
 const { createLoan } = require('../utils/loans')
 const settingsNames = require('../utils/platformSettingsNames')
 
-const EscrowFactoryInterfaceEncoder = require("../utils/encoders/EscrowFactoryInterfaceEncoder");
-const IATMSettingsEncoder = require("../utils/encoders/IATMSettingsEncoder");
-const MarketsStateInterfaceEncoder = require("../utils/encoders/MarketsStateInterfaceEncoder");
+const EscrowFactoryEncoder = require("../utils/encoders/IEscrowFactoryEncoder");
+const ATMSettingsEncoder = require("../utils/encoders/IATMSettingsEncoder");
+const IMarketsStateEncoder = require("../utils/encoders/IMarketsStateEncoder");
 
 // Mock contracts
 const Mock = artifacts.require("./mock/util/Mock.sol");
@@ -25,9 +25,9 @@ const Loans = artifacts.require("./mock/base/LoansBaseMock.sol");
 const LoanLib = artifacts.require("../util/LoanLib.sol");
 
 contract("LoansBaseTakeOutLoanTest", function(accounts) {
-  const escrowFactoryInterfaceEncoder = new EscrowFactoryInterfaceEncoder(web3);
-  const IAtmSettingsEncoder = new IATMSettingsEncoder(web3);
-  const MarketsStateEncoder = new MarketsStateInterfaceEncoder(web3);
+  const IEscrowFactoryEncoder = new EscrowFactoryEncoder(web3);
+  const IAtmSettingsEncoder = new ATMSettingsEncoder(web3);
+  const MarketsStateEncoder = new IMarketsStateEncoder(web3);
 
   const owner = accounts[0];
   let instance;
@@ -58,7 +58,7 @@ contract("LoansBaseTakeOutLoanTest", function(accounts) {
         onInitialize: async (instance, { escrowFactory, chainlinkAggregator, atmSettings, marketsState }) => {
           const newEscrowInstance = await Mock.new();
           await escrowFactory.givenMethodReturnAddress(
-            escrowFactoryInterfaceEncoder.encodeCreateEscrow(),
+            IEscrowFactoryEncoder.encodeCreateEscrow(),
             newEscrowInstance.address
           );
 
