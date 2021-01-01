@@ -172,10 +172,11 @@ library LoanLib {
         @param loansContract The loans contract instance for the loan.
         @return memory TellerCommon.LoanCollateralInfo Collateral information of the loan.
      */
-    function getCollateralInfo(
-        TellerCommon.Loan storage loan,
-        ILoans loansContract
-    ) public view returns (TellerCommon.LoanCollateralInfo memory) {
+    function getCollateralInfo(TellerCommon.Loan storage loan, ILoans loansContract)
+        public
+        view
+        returns (TellerCommon.LoanCollateralInfo memory)
+    {
         (
             int256 neededInLending,
             int256 neededInCollateral,
@@ -221,10 +222,7 @@ library LoanLib {
         @return int256 Collateral needed in Collateral tokens (wei)
         @return uint256 The value of the loan held in the escrow contract
      */
-    function getCollateralNeededInfo(
-        TellerCommon.Loan storage loan,
-        ILoans loansContract
-    )
+    function getCollateralNeededInfo(TellerCommon.Loan storage loan, ILoans loansContract)
         public
         view
         returns (
@@ -312,10 +310,11 @@ library LoanLib {
         @param loansContract The loans contract instance for the loan.
         @return liquidationInfo get current liquidation info for the given loan id.
      */
-    function getLiquidationInfo(
-        TellerCommon.Loan storage loan,
-        ILoans loansContract
-    ) public view returns (TellerCommon.LoanLiquidationInfo memory liquidationInfo) {
+    function getLiquidationInfo(TellerCommon.Loan storage loan, ILoans loansContract)
+        public
+        view
+        returns (TellerCommon.LoanLiquidationInfo memory liquidationInfo)
+    {
         liquidationInfo.collateralInfo = getCollateralInfo(loan, loansContract);
         liquidationInfo.amountToLiquidate = getTotalOwed(loan);
 

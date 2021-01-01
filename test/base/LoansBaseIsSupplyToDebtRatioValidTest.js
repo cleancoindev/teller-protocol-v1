@@ -18,7 +18,7 @@ const Loans = artifacts.require("./mock/base/LoansBaseMock.sol");
 // Libraries
 const LoanLib = artifacts.require("../util/LoanLib.sol");
 
-contract("LoansBaseIsDebtToSupplyRatioValidTest", function(accounts) {
+contract("LoansBaseIsSupplyToDebtRatioValidTest", function(accounts) {
   const IAtmSettingsEncoder = new ATMSettingsEncoder(web3);
   const IMarketsStateEncoder = new MarketsStateEncoder(web3);
   const IATMGovernanceEncoder = new ATMGovernanceEncoder(web3);
@@ -62,12 +62,12 @@ contract("LoansBaseIsDebtToSupplyRatioValidTest", function(accounts) {
     loanAmount,
     useEmptyATMGovernanceAddress,
     getGeneralSettingResponse,
-    getDebtToSupplyForResponse,
+    getSupplyToDebtForResponse,
     expectedResult,
     expectedErrorMessage,
     mustFail
   ) {
-    it(t("user", "_isDebtToSupplyRatioValid", "Should able to test whether is StD ratio is valid or not.", mustFail), async function() {
+    it(t("user", "_isSupplyToDebtRatioValid", "Should able to test whether is StD ratio is valid or not.", mustFail), async function() {
       // Setup
       const atmGovernanceInstance = await Mock.new();
       const atmGovernanceAddress = useEmptyATMGovernanceAddress ? NULL_ADDRESS : atmGovernanceInstance.address;
@@ -80,13 +80,13 @@ contract("LoansBaseIsDebtToSupplyRatioValidTest", function(accounts) {
         getGeneralSettingResponse
       );
       await marketsInstance.givenMethodReturnUint(
-        IMarketsStateEncoder.encodeGetDebtToSupplyFor(),
-        getDebtToSupplyForResponse
+        IMarketsStateEncoder.encodeGetSupplyToDebtFor(),
+        getSupplyToDebtForResponse
       );
 
       try {
         // Invocation
-        const result = await instance.externalIsDebtToSupplyRatioValid(loanAmount);
+        const result = await instance.externalIsSupplyToDebtRatioValid(loanAmount);
 
         // Assertions
         assert(!mustFail, "It should have failed because data is invalid.");

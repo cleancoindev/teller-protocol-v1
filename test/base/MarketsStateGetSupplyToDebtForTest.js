@@ -37,16 +37,16 @@ contract('MarketsStateGetDebtToSupplyForTest', function (accounts) {
     const newAmount = (amount, type, borrowedIndex, collateralIndex) => ({amount, type, borrowedIndex, collateralIndex});
 
     withData({
-        // (500 borrow - 100 repay + 500 newLoanAmount) / 2000 Supply = 0.45
+        // 2000 Supply / (500 borrow - 100 repay + 500 newLoanAmount) = 2.22
         _1_scenario: [
             [
                 newAmount(1000, actions.Inc_Supply, 0, 1),
                 newAmount(1000, actions.Inc_Supply, 0, 1),
                 newAmount(500, actions.Borrow, 0, 1),
                 newAmount(100, actions.Repay, 0, 1),
-            ], 0, 1, 500, 0.45 * 10000
+            ], 0, 1, 500, 22222
         ],
-        // (2000 borrow - 1000 repay + 700 newLoanAmount) / 2000 Supply = 0.85
+        // 2000 Supply / (2000 borrow - 1000 repay + 700 newLoanAmount) = 1.18
         _2_scenario: [
             [
                 newAmount(1000, actions.Inc_Supply, 0, 1),
@@ -55,9 +55,9 @@ contract('MarketsStateGetDebtToSupplyForTest', function (accounts) {
                 newAmount(500, actions.Repay, 0, 1),
                 newAmount(500, actions.Repay, 0, 1),
                 newAmount(1500, actions.Borrow, 0, 1),
-            ], 0, 1, 700, 0.85 * 10000
+            ], 0, 1, 700, 11764
         ],
-        // (2500 borrow - 0 repay + 500 newLoanAmount) / 2500 Supply = 1.25
+        // 2500 Supply / (2500 borrow - 0 repay + 500 newLoanAmount) = 0.83
         _3_scenario: [
             [
                 newAmount(1000, actions.Inc_Supply, 0, 1),
@@ -65,19 +65,19 @@ contract('MarketsStateGetDebtToSupplyForTest', function (accounts) {
                 newAmount(1500, actions.Inc_Supply, 0, 1),
                 newAmount(1500, actions.Borrow, 0, 1),
                 newAmount(500, actions.Borrow, 0, 1),
-            ], 0, 1, 500, 1.2 * 10000
+            ], 0, 1, 500, 8333 
         ],
-        // (0 borrow - 0 repay + 1000 newLoanAmount) / 1000 Supply = 1
+        // 1000 Supply / (0 borrow - 0 repay + 1000 newLoanAmount) = 1
         _4_scenario: [
             [
                 newAmount(1000, actions.Inc_Supply, 0, 1),
-            ], 0, 1, 1000, 1 * 10000
+            ], 0, 1, 1000, 10000
         ],
-        // (0 borrow - 0 repay + 2000 newLoanAmount) / 0 Supply = 0
+        // 0 Supply / (0 borrow - 0 repay + 2000 newLoanAmount) = 0
         _5_scenario: [
-            [], 0, 1, 2000, 0 * 10000
+            [], 0, 1, 2000, 0
         ],
-        // (2000 borrow - 2040 repay + 0 newLoanAmount) / 2500 Supply = 0
+        // 2000 Supply / (2000 borrow - 2040 repay + 0 newLoanAmount) = 0
         _6_scenario: [
             [
                 newAmount(1000, actions.Inc_Supply, 0, 1),
@@ -108,7 +108,7 @@ contract('MarketsStateGetDebtToSupplyForTest', function (accounts) {
             const collateralAsssetToTest = mocks[collateralIndexToTest];
 
             // Invocation
-            const result = await instance.getDebtToSupplyFor(
+            const result = await instance.getSupplyToDebtFor(
                 borrowedAsssetToTest,
                 collateralAsssetToTest,
                 newLoanAmount

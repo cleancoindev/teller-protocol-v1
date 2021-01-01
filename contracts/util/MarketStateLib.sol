@@ -55,35 +55,35 @@ library MarketStateLib {
     }
 
     /**
-        @notice It gets the current debt-to-supply (DtS) ratio for a given market.
-        @notice The formula to calculate DtS ratio is:
+        @notice It gets the current supply-to-debt (StD) ratio for a given market.
+        @notice The formula to calculate StD ratio is:
             
-            DtS = (SUM(total borrowed) - SUM(total repaid)) / SUM(total supplied)
+            StD = SUM(total supplied) / (SUM(total borrowed) - SUM(total repaid))
 
         @notice The value has 2 decimal places.
             Example:
                 100 => 1%
         @param self the current market state reference.
-        @return the debt-to-supply ratio value.
+        @return the supply-to-debt ratio value.
      */
-    function getDebtToSupply(MarketState storage self) internal view returns (uint256) {
+    function getSupplyToDebt(MarketState storage self) internal view returns (uint256) {
         if (self.totalSupplied == 0 || self.totalBorrowed <= self.totalRepaid) {
             return 0;
         }
-        return self.totalBorrowed.sub(self.totalRepaid).ratioOf(self.totalSupplied);
+        return self.totalSupplied.ratioOf(self.totalBorrowed.sub(self.totalRepaid));
     }
 
     /**
-        @notice It gets the debt-to-supply (DtS) ratio for a given market, including a new loan amount.
-        @notice The formula to calculate DtS ratio (including a new loan amount) is:
+        @notice It gets the supply-to-debt (StD) ratio for a given market, including a new loan amount.
+        @notice The formula to calculate StD ratio (including a new loan amount) is:
             
-            DtS = (SUM(total borrowed) - SUM(total repaid) + NewLoanAmount) / SUM(total supplied)
+            StD =  SUM(total supplied) / (SUM(total borrowed) - SUM(total repaid) + NewLoanAmount)
 
         @param self the current market state reference.
         @param loanAmount a new loan amount to consider in the ratio.
-        @return the debt-to-supply ratio value.
+        @return the supply-to-debt ratio value.
      */
-    function getDebtToSupplyFor(MarketState storage self, uint256 loanAmount)
+    function getSupplyToDebtFor(MarketState storage self, uint256 loanAmount)
         internal
         view
         returns (uint256)
@@ -95,8 +95,8 @@ library MarketStateLib {
             return 0;
         }
         return
-            self.totalBorrowed.add(loanAmount).sub(self.totalRepaid).ratioOf(
-                self.totalSupplied
+            self.totalSupplied.ratioOf(
+                self.totalBorrowed.add(loanAmount).sub(self.totalRepaid)
             );
     }
 }

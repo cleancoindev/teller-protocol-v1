@@ -33,12 +33,7 @@ import "../providers/compound/CErc20Interface.sol";
 
     @author develop@teller.finance
  */
-contract MarketsState is
-    IMarketsState,
-    TInitializable,
-    WhitelistedRole,
-    BaseUpgradeable
-{
+contract MarketsState is IMarketsState, TInitializable, WhitelistedRole, BaseUpgradeable {
     using AddressLib for address;
     using Address for address;
     using MarketStateLib for MarketStateLib.MarketState;
@@ -144,37 +139,37 @@ contract MarketsState is
     }
 
     /**
-        @notice It gets the current debt-to-supply (DtS) ratio for a given market.
+        @notice It gets the current supply-to-debt (StD) ratio for a given market.
         @param borrowedAsset borrowed asset address.
         @param collateralAsset collateral asset address.
-        @return the debt-to-supply ratio value.
+        @return the supply-to-debt ratio value.
      */
-    function getDebtToSupply(address borrowedAsset, address collateralAsset)
+    function getSupplyToDebt(address borrowedAsset, address collateralAsset)
         external
         view
         returns (uint256)
     {
-        return _getMarket(borrowedAsset, collateralAsset).getDebtToSupply();
+        return _getMarket(borrowedAsset, collateralAsset).getSupplyToDebt();
     }
 
     /**
-        @notice It gets the debt-to-supply (DtS) ratio for a given market, including a new loan amount.
+        @notice It gets the supply-to-debt (StD) ratio for a given market, including a new loan amount.
         @param borrowedAsset borrowed asset address.
         @param collateralAsset collateral asset address.
         @param loanAmount a new loan amount to consider in the ratio.
-        @return the debt-to-supply ratio value.
+        @return the supply-to-debt ratio value.
      */
-    function getDebtToSupplyFor(
+    function getSupplyToDebtFor(
         address borrowedAsset,
         address collateralAsset,
         uint256 loanAmount
     ) external view returns (uint256) {
         address cTokenAddress = _getCTokenAddress(borrowedAsset);
         if (cTokenAddress.isEmpty()) {
-            return markets[borrowedAsset][collateralAsset].getDebtToSupplyFor(loanAmount);
+            return markets[borrowedAsset][collateralAsset].getSupplyToDebtFor(loanAmount);
         } else {
             return
-                markets[cTokenAddress][collateralAsset].getDebtToSupplyFor(
+                markets[cTokenAddress][collateralAsset].getSupplyToDebtFor(
                     _getValueForAmount(borrowedAsset, loanAmount)
                 );
         }

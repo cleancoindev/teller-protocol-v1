@@ -7,8 +7,8 @@ class IMarketsStateEncoder {
     }
 }
 
-IMarketsStateEncoder.prototype.encodeGetDebtToSupplyFor = function() {
-    return encode(this.web3, 'getDebtToSupplyFor(address,address,uint256)');
+IMarketsStateEncoder.prototype.encodeGetSupplyToDebtFor = function() {
+    return encode(this.web3, 'getSupplyToDebtFor(address,address,uint256)');
 }
 
 module.exports = IMarketsStateEncoder;

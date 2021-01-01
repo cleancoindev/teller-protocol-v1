@@ -35,11 +35,7 @@ import "./ATMCommon.sol";
     @dev It uses specific configuration from ATM Governance instance. 
     @author develop@teller.finance
  */
-contract ATMLiquidityMining is
-    IATMLiquidityMining,
-    TInitializable,
-    BaseUpgradeable
-{
+contract ATMLiquidityMining is IATMLiquidityMining, TInitializable, BaseUpgradeable {
     using SafeMath for uint256;
 
     /* Constants */

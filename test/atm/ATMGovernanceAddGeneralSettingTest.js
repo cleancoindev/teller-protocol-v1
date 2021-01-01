@@ -27,7 +27,7 @@ contract('ATMGovernanceAddGeneralSettingTest', function (accounts) {
     });
 
     // Testing values
-    const SETTING_NAME = toBytes32(web3, 'DebtToSupplyRatio');
+    const SETTING_NAME = toBytes32(web3, 'SupplyToDebtRatio');
     const SETTING_VALUE = 5044;
     const EMPTY_SETTING_NAME = toBytes32(web3, '');
     const EMPTY_SETTING_VALUE = 0;

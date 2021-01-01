@@ -7,26 +7,26 @@ import "../../base/EtherCollateralLoans.sol";
     This contract is created ONLY for testing purposes.
  */
 contract LoansBaseModifiersMock is EtherCollateralLoans {
-    bool public mockIsDebtToSupplyRatioValid;
-    bool public returnIsDebtToSupplyRatioValid;
+    bool public mockIsSupplyToDebtRatioValid;
+    bool public returnIsSupplyToDebtRatioValid;
 
     function setMockIsDebtToDebtRatioValid(
         bool result,
-        bool aResponseIsDebtToSupplyRatioValid
+        bool aResponseIsSupplyToDebtRatioValid
     ) external {
-        mockIsDebtToSupplyRatioValid = result;
-        returnIsDebtToSupplyRatioValid = aResponseIsDebtToSupplyRatioValid;
+        mockIsSupplyToDebtRatioValid = result;
+        returnIsSupplyToDebtRatioValid = aResponseIsSupplyToDebtRatioValid;
     }
 
-    function _isDebtToSupplyRatioValid(uint256 newLoanAmount)
+    function _isSupplyToDebtRatioValid(uint256 newLoanAmount)
         internal
         view
         returns (bool)
     {
-        if (!mockIsDebtToSupplyRatioValid) {
-            return super._isDebtToSupplyRatioValid(newLoanAmount);
+        if (!mockIsSupplyToDebtRatioValid) {
+            return super._isSupplyToDebtRatioValid(newLoanAmount);
         }
-        return returnIsDebtToSupplyRatioValid;
+        return returnIsSupplyToDebtRatioValid;
     }
 
     function setLoanStatus(uint256 loanID, TellerCommon.LoanStatus status) external {

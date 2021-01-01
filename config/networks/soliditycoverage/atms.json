@@ -9,7 +9,7 @@
       "maxVestingPerWallet": 50
     },
     "tlrInitialReward": 0,
-    "DebtToSupply": 5000,
+    "SupplyToDebt": 5000,
     "markets": []
   }
 }
