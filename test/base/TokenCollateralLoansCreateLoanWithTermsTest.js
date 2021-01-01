@@ -112,7 +112,7 @@ contract('TokenCollateralLoansCreateLoanWithTermsTest', function (accounts) {
 
     const lendingPoolInstance = await Mock.new()
     lendingPoolInstance.givenMethodReturnAddress(
-      ILendingPoolEncoder.encodeLendingToken(),
+      iLendingPoolEncoder.encodeLendingToken(),
       lendingTokenInstance.address
     )
     

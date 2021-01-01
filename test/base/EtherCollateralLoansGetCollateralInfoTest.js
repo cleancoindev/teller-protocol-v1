@@ -39,7 +39,7 @@ contract("EtherCollateralLoansGetCollateralInfoTest", function(accounts) {
     lendingPoolInstance = await Mock.new();
     lendingToken = await Mock.new();
     await lendingPoolInstance.givenMethodReturnAddress(
-      ILendingPoolEncoder.encodeLendingToken(),
+      iLendingPoolEncoder.encodeLendingToken(),
       lendingToken.address
     );
 

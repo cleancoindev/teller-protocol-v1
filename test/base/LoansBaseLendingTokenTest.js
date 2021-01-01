@@ -39,7 +39,7 @@ contract('LoansBaseLendingTokenTest', function (accounts) {
         it(t('user', 'lendingToken', 'Should able to get the lending token address.', false), async function() {
             // Setup
             const lendingTokenAddress = lendingTokenIndex === -1 ? NULL_ADDRESS: accounts[lendingTokenIndex];
-            const encodeLendingToken = ILendingPoolEncoder.encodeLendingToken();
+            const encodeLendingToken = iLendingPoolEncoder.encodeLendingToken();
             await lendingPoolInstance.givenMethodReturnAddress(encodeLendingToken, lendingTokenAddress);
 
             // Invocation

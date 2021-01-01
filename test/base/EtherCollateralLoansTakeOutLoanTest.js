@@ -95,7 +95,7 @@ contract('EtherCollateralLoansTakeOutLoanTest', function (accounts) {
     lendingTokenInstance = await Mock.new()
     const encodeDecimals = erc20InterfaceEncoder.encodeDecimals()
     await lendingTokenInstance.givenMethodReturnUint(encodeDecimals, 18)
-    const encodeLendingToken = ILendingPoolEncoder.encodeLendingToken()
+    const encodeLendingToken = iLendingPoolEncoder.encodeLendingToken()
     await lendingPoolInstance.givenMethodReturnAddress(encodeLendingToken, lendingTokenInstance.address)
   })
 

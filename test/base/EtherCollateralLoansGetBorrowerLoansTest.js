@@ -87,7 +87,7 @@ contract('EtherCollateralLoansGetBorrowerLoansTest', function (accounts) {
             .processRequest(emptyRequest, [responseOne])
             .encodeABI();
         
-        const encodeLendingToken = ILendingPoolEncoder.encodeLendingToken();
+        const encodeLendingToken = iLendingPoolEncoder.encodeLendingToken();
         lendingPoolInstance.givenMethodReturnAddress(encodeLendingToken, lendingTokenInstance.address);
 
         const atmForMarketInstance = await Mock.new();

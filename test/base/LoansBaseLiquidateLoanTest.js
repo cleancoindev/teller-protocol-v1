@@ -62,7 +62,7 @@ contract("LoansBaseLiquidateLoanTest", function(accounts) {
     );
 
     // encode lending token address
-    const encodeLendingToken = ILendingPoolEncoder.encodeLendingToken();
+    const encodeLendingToken = iLendingPoolEncoder.encodeLendingToken();
     await lendingPoolInstance.givenMethodReturnAddress(encodeLendingToken, lendingTokenInstance.address);
   });
 
