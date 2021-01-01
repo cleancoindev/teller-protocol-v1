@@ -341,6 +341,7 @@ interface ISettings {
         @param marketsStateAddress the initial markets state address.
         @param interestValidatorAddress the initial interest validator address.
         @param atmSettingsAddress the initial ATM settings address.
+        @param wethTokenAddress canonical WETH token address.
         @param cethTokenAddress compound CETH token address.
      */
     function initialize(
@@ -350,6 +351,7 @@ interface ISettings {
         address marketsStateAddress,
         address interestValidatorAddress,
         address atmSettingsAddress,
+        address wethTokenAddress,
         address cethTokenAddress
     ) external;
 
@@ -369,5 +371,5 @@ interface ISettings {
         @notice It gets the canonical CETH address used in the platform.
         @return the canonical CETH address used in the platform.
      */
-    function cethAddress() external view returns (address);
+    function CETH_ADDRESS() external view returns (address);
 }
